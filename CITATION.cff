@@ -2,7 +2,7 @@ cff-version: 1.2.0
 message: "If you use this software, please cite it using the metadata below."
 title: "MTW NetLoopScheduler"
 type: software
-version: 0.1.1
+version: 0.1.2
 repository-code: "https://github.com/MyTechWaifu/MTW_NetLoopScheduler"
 doi: "10.5281/zenodo.24027638"
 authors:
