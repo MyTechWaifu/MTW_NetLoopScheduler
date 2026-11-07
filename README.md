@@ -1,4 +1,5 @@
 # MTW NetLoopScheduler
+[![DOI](https://zenodo.org/badge/1449011313.svg)](https://doi.org/10.5281/zenodo.24027638)
 
 MTW NetLoopScheduler is a lightweight cooperative task scheduler with automatic
 UART data exchange for projects built around two AVR microcontrollers. Its
@@ -24,7 +25,7 @@ to the installed Arduino core.
 
 ## Status
 
-Current version: **0.1.0**.
+Current version: **0.1.1**.
 
 The current network mode is **DUO**: two microcontrollers connected by one
 logical half-duplex UART link. Each shared variable is acknowledged separately.
@@ -91,6 +92,27 @@ maintained in [MTW TinyLoopScheduler](https://github.com/MyTechWaifu/MTW_TinyLoo
 ```
 
 Open the supplied sketches under **File → Examples → MTW NetLoopScheduler**.
+
+### PlatformIO
+
+Install the library from the
+[PlatformIO Registry](https://registry.platformio.org/libraries/techiewaifu/mtw-netloopscheduler).
+Add it to your project's `platformio.ini`:
+
+```ini
+[env:megaatmega2560]
+platform = atmelavr
+board = megaatmega2560
+framework = arduino
+
+lib_deps =
+    techiewaifu/mtw-netloopscheduler
+```
+
+Then include `<MTW_NetLoopScheduler.h>` in `src/main.cpp`.
+Ready-to-build projects are available in
+[platformio-examples/](platformio-examples/README.md). Each example has its own
+`platformio.ini` and `src/main.cpp`; open the individual example directory.
 
 ## Minimal shared-variable example
 
@@ -311,7 +333,16 @@ Examples 01..18 cover TLS scheduling. NLS examples continue the numbering:
 - [Configuration](docs/CONFIGURATION.md)
 - [Platforms and UART wiring](docs/PLATFORMS.md)
 - [Protocol](docs/PROTOCOL.md)
+- [TinyLoopScheduler README](https://github.com/MyTechWaifu/MTW_TinyLoopScheduler)
 - [TinyLoopScheduler documentation](https://github.com/MyTechWaifu/MTW_TinyLoopScheduler/tree/main/docs)
+
+## Citation
+
+If you use this software, please cite MTW NetLoopScheduler using the metadata
+in [CITATION.cff](CITATION.cff).
+
+Project DOI, covering all versions:
+[10.5281/zenodo.24027638](https://doi.org/10.5281/zenodo.24027638).
 
 ## License
 
