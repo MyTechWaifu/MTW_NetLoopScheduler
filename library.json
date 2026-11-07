@@ -1,0 +1,66 @@
+{
+  "$schema": "https://raw.githubusercontent.com/platformio/platformio-core/develop/platformio/assets/schema/library.json",
+  "name": "mtw-netloopscheduler",
+  "version": "0.1.0",
+  "description": "Procedural AVR scheduler with automatic half-duplex UART shared-variable synchronization, static memory, SUM8 and per-variable acknowledgements.",
+  "keywords": [
+    "arduino",
+    "avr",
+    "atmelavr",
+    "megaavr",
+    "scheduler",
+    "cooperative",
+    "timer",
+    "millis",
+    "tasks",
+    "static-memory",
+    "no-heap",
+    "attiny",
+    "atmega",
+    "embedded"
+  ],
+  "authors": [
+    {
+      "name": "MyTechWaifu",
+      "url": "https://github.com/MyTechWaifu",
+      "maintainer": true
+    }
+  ],
+  "license": "Apache-2.0",
+  "frameworks": [
+    "arduino"
+  ],
+  "platforms": [
+    "atmelavr",
+    "atmelmegaavr"
+  ],
+  "headers": [
+    "MTW_NetLoopScheduler.h"
+  ],
+  "export": {
+    "include": [
+      "src/**",
+      "examples/**",
+      "platformio-examples/**",
+      "docs/**",
+      "README.md",
+      "CHANGELOG.md",
+      "LICENSE",
+      "NOTICE",
+      "keywords.txt",
+      "library.properties",
+      "CITATION.cff",
+      "library.json"
+    ],
+    "exclude": [
+      ".gitignore",
+      ".gitattributes",
+      ".github/*"
+    ]
+  },
+  "homepage": "https://github.com/MyTechWaifu/MTW_NetLoopScheduler",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MyTechWaifu/MTW_NetLoopScheduler.git"
+  }
+}

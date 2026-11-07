@@ -1,0 +1,25 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it using the metadata below."
+title: "MTW NetLoopScheduler"
+type: software
+version: 0.1.0
+repository-code: "https://github.com/MyTechWaifu/MTW_NetLoopScheduler"
+authors:
+  - name: "MyTechWaifu"
+contact:
+  - name: "MyTechWaifu"
+    email: "MyTechWaifu@web3msg.fun"
+license: Apache-2.0
+abstract: >-
+  MTW NetLoopScheduler is a header-only cooperative scheduler for AVR
+  microcontrollers, based on MTW TinyLoopScheduler, with procedural
+  native-UART shared-variable synchronization, static memory,
+  VALUE-only SUM8 and per-variable acknowledgements.
+keywords:
+  - Arduino
+  - AVR
+  - embedded systems
+  - cooperative scheduling
+  - shared variables
+  - UART
+  - static memory
