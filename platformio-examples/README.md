@@ -13,14 +13,15 @@ ExampleName/
 ## Requirements
 
 Use Visual Studio Code with PlatformIO IDE or PlatformIO Core CLI. The
-project installs the library from GitHub:
+project installs the library from the
+[PlatformIO Registry](https://registry.platformio.org/libraries/techiewaifu/mtw-netloopscheduler):
 
 ```ini
 [env]
 platform = atmelavr
 framework = arduino
 lib_deps =
-    https://github.com/MyTechWaifu/MTW_NetLoopScheduler.git
+    techiewaifu/mtw-netloopscheduler
 ```
 
 ## Open and build
