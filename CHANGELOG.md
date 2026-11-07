@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.2
+
+- Fix startup and restart handling in the LED PingPong and LED Tempo examples.
+- Update both Arduino and PlatformIO versions of the examples.
+- Scheduler and NET protocol implementations are unchanged.
+  
 ## 0.1.1
 
 - Add the project-wide Zenodo DOI badge and citation metadata.
