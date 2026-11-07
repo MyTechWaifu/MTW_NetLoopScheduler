@@ -25,7 +25,7 @@ to the installed Arduino core.
 
 ## Status
 
-Current version: **0.1.1**.
+Current version: **0.1.2**.
 
 The current network mode is **DUO**: two microcontrollers connected by one
 logical half-duplex UART link. Each shared variable is acknowledged separately.
