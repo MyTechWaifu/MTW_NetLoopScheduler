@@ -35,3 +35,17 @@ RX input. Check any USB-UART connection on single-UART boards.
 For the DB alternate route, select NLS_SERIAL=Serial2 before the include and
 call Serial2.swap(1) in setup before tinyls::init(). The application may use
 USART0 PA0/PA1 for its console. This route is specific to DB, not DD.
+
+## PlatformIO examples
+
+Install the library from the
+[PlatformIO Registry](https://registry.platformio.org/libraries/techiewaifu/mtw-netloopscheduler)
+by adding `techiewaifu/mtw-netloopscheduler` to `lib_deps` in `platformio.ini`.
+See [installation](../README.md#platformio) and
+[ready-to-build projects](../platformio-examples/README.md).
+
+Each example directory is an independent project. The supplied environments
+include Mega2560, Leonardo and ATmega328PB/MiniCore. Examples 19, 20 and 22
+also provide `uno_net`, where the sole hardware UART is dedicated to NET.
+Example 21 needs a separate console interface. Board and core availability
+depend on the installed PlatformIO packages.
