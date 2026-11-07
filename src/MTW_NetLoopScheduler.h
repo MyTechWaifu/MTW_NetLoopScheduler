@@ -137,6 +137,13 @@
 #ifndef MTW_NET_LOOP_SCHEDULER_DECLARATIONS_H
 #define MTW_NET_LOOP_SCHEDULER_DECLARATIONS_H
 
+
+// NLS release version; TLS_VERSION_* identifies the embedded TLS backend.
+#define NLS_VERSION_MAJOR 0
+#define NLS_VERSION_MINOR 1
+#define NLS_VERSION_PATCH 1
+#define NLS_VERSION_STRING "0.1.1"
+
 #include <Arduino.h>
 
 #include "mtw_ls/MTW_LS_Platform.h"
