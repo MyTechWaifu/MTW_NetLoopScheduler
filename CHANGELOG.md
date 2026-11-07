@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.1
+
+- Add the project-wide Zenodo DOI badge and citation metadata.
+- Document installation from the PlatformIO Registry.
+- Use the Registry package in all PlatformIO example configurations.
+- Add a direct link to the TinyLoopScheduler README.
+- Scheduler, shared-variable and protocol implementations are unchanged.
+
 ## 0.1.0
 
 Initial release.
