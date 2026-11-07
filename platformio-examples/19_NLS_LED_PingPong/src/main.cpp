@@ -7,19 +7,24 @@
   Upload the SAME sketch to both boards. Cross NET TX/RX and connect GND.
   Nano 328PB / MiniCore: Serial1 TX=D11, RX=D12. No console.
 
-  AFTER allows local startup sending and LED lighting after a 0..255 ms startup delay.
-  Incoming startup values are processed immediately. POLL changes and commits a
-  seven-bit value, remembering every local write in previous. A different
-  received value can then be recognized without a library receive callback.
-  The first recipient publishes RUN and starts its LED. Its peer receives
-  RUN and waits for the handoff. NLS owns ASK, backoff and UART transmission.
+  A one-shot AFTER uses netls::random() for a 0..255 ms startup delay.
+  After that delay, this board publishes a startup value with RUN cleared.
+  POLL keeps changing the low seven bits until it observes a different value
+  received from the peer. All local writes update previous, so they do not
+  start the LED themselves. The first recipient publishes RUN and lights up;
+  the peer receives RUN and waits for a changed TURN bit.
 
-  Startup can make several commits: set() marks the current value dirty;
-  it does not queue every intermediate value. If a received startup value
-  equals our last local value, POLL keeps changing it until a difference is
-  observed. This is a startup demonstration, not application restart recovery.
-  Start or reset both boards for a fresh game. No extra handshake wires,
-  node numbers, protocol callbacks or receive-notification API are used.
+  If one board restarts, it publishes startup again. The running peer cancels
+  its old LED-off task, turns its LED off and starts a fresh game at RUN.
+  A stale RUN received before this board's initial AFTER is ignored: we must
+  announce our own startup first. Tempo restarts its duration sequence at
+  1024 ms. Startup commits can coalesce; they are not a queue of events.
+
+  Both boards use the same sketch, with one ordinary shared byte. No node ID,
+  private protocol state, receive callback or application random generator is
+  used. NLS owns HELLO, ASK arbitration, acknowledgements and retries. These
+  examples still rely on NLS making progress; they cannot resolve a protocol
+  collision with perfectly identical timing on both boards.
 */
 #include <MTW_NetLoopScheduler.h>
 
@@ -37,8 +42,7 @@ static const uint8_t RUN = 128u;
 static const uint8_t TURN = 64u;
 
 static bool starting = false;      // The startup delay has elapsed.
-static bool initialized = false;   // The startup exchange is complete.
-static bool first = false;         // This board starts the first pulse.
+static bool initialized = false;   // The current game has started.
 static uint8_t previous = 0;       // Updated after every local write.
 
 // AFTER calls this once after the hold time. Turn the local LED off before
@@ -57,25 +61,41 @@ static void lightOff()
 // it does not wait here, so loop(), NET and the other tasks keep running.
 static void lightOn()
 {
+    // A POST queued before restart must not light the LED during startup.
+    if (!initialized || !(control & RUN)) {
+        return;
+    }
     digitalWrite(LED_BUILTIN, HIGH);
     tinyls::after(lightOff, 1000u);
 }
 
-// This one-shot task permits local startup sending after a 0..255 ms startup delay.
-// If an incoming startup value selected us earlier, start the first pulse
-// now. The initial AFTER has finished, leaving its queue slot available.
+// Announce OUR startup before accepting an old working value from the peer.
+// This AFTER runs only once. The zero has RUN cleared and requests a new game.
 static void beginStartup()
 {
     starting = true;
-    if (first) {
-        tinyls::post(lightOn);
-    }
+    shared::set(control, 0);
+    previous = control;
 }
 
 // POLL visits this on every scheduler pass. It only posts LED work when a
 // relevant received change is observed; it does not repeatedly create AFTERs.
 static void watchControl()
 {
+    // The initial AFTER must publish startup first. Merely receiving an old
+    // RUN is not enough: otherwise both boards could end up waiting for a turn.
+    if (!starting) {
+        return;
+    }
+
+    // A restarted peer sends a value with RUN cleared. Cancel our old AFTER
+    // and extinguish the LED before the same startup code below starts again.
+    if (initialized && !(control & RUN)) {
+        tinyls::removeAfter(lightOff);
+        digitalWrite(LED_BUILTIN, LOW);
+        initialized = false;
+    }
+
     if (!initialized) {
         // The peer published RUN: startup is over; wait for its first handoff.
         if (control & RUN) {
@@ -83,15 +103,14 @@ static void watchControl()
             previous = control;
         } else if (control != previous) {
             // All our own writes update previous; this change came from NET.
-            // Recognize a differing received startup value. Publish RUN,
-            // stop startup writes and take the first LED pulse locally.
+            // A different incoming startup value selects us as the starter.
+            // Clear old LED work and publish RUN with TURN/Tempo phase zero.
             initialized = true;
-            first = true;
+            tinyls::removeAfter(lightOff);
+            digitalWrite(LED_BUILTIN, LOW);
             shared::set(control, RUN);
             previous = control;
-            if (starting) {
-                tinyls::post(lightOn);
-            }
+            tinyls::post(lightOn);
         } else if (starting) {
             // Keep the startup value changing until a peer value is seen.
             // set() marks it dirty; NLS sends current values in its own turns.
